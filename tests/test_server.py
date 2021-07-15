@@ -32,4 +32,3 @@ class TestEmail:
             '/showSummary', data={'email': "john@doe.com"}
         )
         assert result.status_code in [403]
-        assert self.clubs_test.get("john@doe.com")
