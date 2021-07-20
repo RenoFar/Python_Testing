@@ -52,8 +52,8 @@ def purchasePlaces():
     competition = [c for c in competitions if c['name'] == request.form['competition']][0]
     club = [c for c in clubs if c['name'] == request.form['club']][0]
     placesRequired = int(request.form['places'])
-    if placesRequired > int(club['points']):
-        flash(f"Max points allowed should be {club['points']}")
+    if placesRequired > int(club['points']) or placesRequired < 0 or placesRequired > 12:
+        flash(f"Max points allowed should be 12 per competition")
         return render_template("index.html", clubs=clubs), 403
     else:
         club['points'] = int(club['points']) - placesRequired
