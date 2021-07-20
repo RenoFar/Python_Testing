@@ -35,6 +35,7 @@ def showSummary():
         flash("Invalid email")
         return render_template("index.html", clubs=clubs), 403
 
+
 @app.route('/book/<competition>/<club>')
 def book(competition, club):
     foundClub = [c for c in clubs if c['name'] == club][0]
@@ -51,9 +52,14 @@ def purchasePlaces():
     competition = [c for c in competitions if c['name'] == request.form['competition']][0]
     club = [c for c in clubs if c['name'] == request.form['club']][0]
     placesRequired = int(request.form['places'])
-    competition['numberOfPlaces'] = int(competition['numberOfPlaces']) - placesRequired
-    flash('Great-booking complete!')
-    return render_template('welcome.html', club=club, competitions=competitions)
+    if placesRequired > int(club['points']):
+        flash(f"Max points allowed should be {club['points']}")
+        return render_template("index.html", clubs=clubs), 403
+    else:
+        club['points'] = int(club['points']) - placesRequired
+        competition['numberOfPlaces'] = int(competition['numberOfPlaces']) - placesRequired
+        flash('Great-booking complete!')
+        return render_template('welcome.html', club=club, competitions=competitions)
 
 
 # TODO: Add route for points display
