@@ -114,3 +114,45 @@ class TestPlacesNumber:
                 "competition": self.competitions_test[0]["name"]}
         )
         assert result.status_code in [403]
+
+
+class TestPastCompetition:
+    """
+        Clubs shouldn't be able to Booking places in past competitions
+    """
+
+    @classmethod
+    def setup_class(cls):
+        """
+             setup variable of the class
+        """
+        cls.client_test = server.app.test_client()
+        cls.clubs_test = server.clubs
+        cls.competitions_test = server.competitions
+        # adding a future competition test
+        cls.competitions_test.append(
+            {"name": "Test competition",
+             "date": "2024-07-21 09:00:00",
+             "numberOfPlaces": 21,
+             }
+        )
+
+    def test_past_competition(self):
+        """
+            testing to book a past competition
+        """
+        result = self.client_test.get(
+            "/book/" + self.competitions_test[0]['name']
+            + "/" + self.clubs_test[0]['name']
+        )
+        assert result.status_code in [403]
+
+    def test_future_competition(self):
+        """
+            testing to book a future competition
+        """
+        result = self.client_test.get(
+            "/book/" + self.competitions_test[2]['name']
+            + "/" + self.clubs_test[0]['name']
+        )
+        assert result.status_code in [200]
