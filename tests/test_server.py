@@ -145,7 +145,7 @@ class TestPastCompetition:
             "/book/" + self.competitions_test[0]['name']
             + "/" + self.clubs_test[0]['name']
         )
-        assert result.status_code in [403]
+        assert result.status_code in [302]
 
     def test_future_competition(self):
         """

@@ -51,7 +51,7 @@ def book(competition, club):
     print(f'foundCompetitionDate {foundCompetitionDate}')
     if datetime.strptime(str(foundCompetitionDate), "%Y-%m-%d %H:%M:%S") <= datetime.now():
         flash("booking allowed only for future competition")
-        return render_template("index.html"), 403
+        return redirect(url_for('index'), 302)
     elif foundClub and foundCompetition:
         return render_template('booking.html', club=foundClub, competition=foundCompetition)
     else:
@@ -66,7 +66,7 @@ def purchasePlaces():
     placesRequired = int(request.form['places'])
     if placesRequired > int(club['points']) or placesRequired < 0 or placesRequired > 12:
         flash("Max points allowed should be 12 per competition")
-        return render_template("index.html", clubs=clubs), 403
+        return redirect(url_for('index'), 302)
     else:
         club['points'] = int(club['points']) - placesRequired
         competition['numberOfPlaces'] = int(competition['numberOfPlaces']) - placesRequired
