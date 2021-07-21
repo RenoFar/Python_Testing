@@ -51,7 +51,7 @@ def book(competition, club):
     print(f'foundCompetitionDate {foundCompetitionDate}')
     if datetime.strptime(str(foundCompetitionDate), "%Y-%m-%d %H:%M:%S") <= datetime.now():
         flash("booking allowed only for future competition")
-        return render_template("index.html", clubs=clubs), 403
+        return render_template("index.html"), 403
     elif foundClub and foundCompetition:
         return render_template('booking.html', club=foundClub, competition=foundCompetition)
     else:
