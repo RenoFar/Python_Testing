@@ -64,11 +64,11 @@ def purchasePlaces():
     competition = [c for c in competitions if c['name'] == request.form['competition']][0]
     club = [c for c in clubs if c['name'] == request.form['club']][0]
     placesRequired = int(request.form['places'])
-    if placesRequired > int(club['points']) or placesRequired < 0 or placesRequired > 12:
-        flash("Max points allowed should be 12 per competition")
+    if placesRequired > (int(club['points']) // 3) or placesRequired < 1 or placesRequired > 12:
+        flash("Number allowed: 1-12 per competition")
         return redirect(url_for('index'), 302)
     else:
-        club['points'] = int(club['points']) - placesRequired
+        club['points'] = int(club['points']) - (placesRequired * 3)
         competition['numberOfPlaces'] = int(competition['numberOfPlaces']) - placesRequired
         flash('Great-booking complete!')
         return render_template('welcome.html', club=club, competitions=competitions)
