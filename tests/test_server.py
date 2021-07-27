@@ -19,6 +19,7 @@ class TestEmail:
         """
             testing a known email
         """
+        print('\n testing a known email')
         result = self.client_test.post(
             '/showSummary', data={'email': "kate@shelifts.co.uk"}
         )
@@ -29,6 +30,7 @@ class TestEmail:
         """
             testing a unknown email
         """
+        print('testing a unknown email')
         result = self.client_test.post(
             '/showSummary', data={'email': "john@doe.com"}
         )
@@ -53,9 +55,10 @@ class TestPoints:
         """
             testing club using its points allowed
         """
+        print('testing club using its points allowed')
         result = self.client_test.post(
             "/purchasePlaces", data={
-                "places": int(self.clubs_test[0]["points"]) - 1,
+                "places": (int(self.clubs_test[0]["points"]) // 3) - 1,
                 "club": self.clubs_test[0]["name"],
                 "competition": self.competitions_test[0]["name"]}
         )
@@ -65,13 +68,14 @@ class TestPoints:
         """
             testing club using not allowed points
         """
+        print('testing club using not allowed points')
         result = self.client_test.post(
             "/purchasePlaces", data={
-                "places": int(self.clubs_test[0]["points"]) + 1,
+                "places": (int(self.clubs_test[0]["points"]) // 3) + 1,
                 "club": self.clubs_test[0]["name"],
                 "competition": self.competitions_test[0]["name"]}
         )
-        assert result.status_code in [403]
+        assert result.status_code in [302]
 
 
 class TestPlacesNumber:
@@ -92,11 +96,12 @@ class TestPlacesNumber:
         """
             testing to book 12 places per competition
         """
+        print('testing to book 12 places per competition')
         result = self.client_test.post(
             "/purchasePlaces", data={
                 "places": 12,
-                "club": self.clubs_test[2]["name"],
-                "competition": self.competitions_test[0]["name"]}
+                "club": self.clubs_test[3]["name"],
+                "competition": self.competitions_test[2]["name"]}
         )
         assert result.status_code in [200]
 
@@ -104,16 +109,17 @@ class TestPlacesNumber:
         """
             testing to book more than 12 places per competition
         """
+        print('testing to book more than 12 places per competition')
         # reinitialisation of  the value
-        self.clubs_test[2]["points"] = server.clubs[2]["points"]
+        self.clubs_test[3]["points"] = server.clubs[3]["points"]
 
         result = self.client_test.post(
             "/purchasePlaces", data={
                 "places": 13,
-                "club": self.clubs_test[2]["name"],
-                "competition": self.competitions_test[0]["name"]}
+                "club": self.clubs_test[3]["name"],
+                "competition": self.competitions_test[2]["name"]}
         )
-        assert result.status_code in [403]
+        assert result.status_code in [302]
 
 
 class TestPastCompetition:
@@ -141,6 +147,7 @@ class TestPastCompetition:
         """
             testing to book a past competition
         """
+        print('testing to book a past competition')
         result = self.client_test.get(
             "/book/" + self.competitions_test[0]['name']
             + "/" + self.clubs_test[0]['name']
@@ -151,6 +158,7 @@ class TestPastCompetition:
         """
             testing to book a future competition
         """
+        print('testing to book a future competition')
         result = self.client_test.get(
             "/book/" + self.competitions_test[2]['name']
             + "/" + self.clubs_test[0]['name']
