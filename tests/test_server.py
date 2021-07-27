@@ -58,7 +58,7 @@ class TestPoints:
         print('testing club using its points allowed')
         result = self.client_test.post(
             "/purchasePlaces", data={
-                "places": int(self.clubs_test[0]["points"]) - 1,
+                "places": (int(self.clubs_test[0]["points"]) // 3) - 1,
                 "club": self.clubs_test[0]["name"],
                 "competition": self.competitions_test[0]["name"]}
         )
@@ -71,7 +71,7 @@ class TestPoints:
         print('testing club using not allowed points')
         result = self.client_test.post(
             "/purchasePlaces", data={
-                "places": int(self.clubs_test[0]["points"]) + 1,
+                "places": (int(self.clubs_test[0]["points"]) // 3) + 1,
                 "club": self.clubs_test[0]["name"],
                 "competition": self.competitions_test[0]["name"]}
         )
@@ -100,8 +100,8 @@ class TestPlacesNumber:
         result = self.client_test.post(
             "/purchasePlaces", data={
                 "places": 12,
-                "club": self.clubs_test[2]["name"],
-                "competition": self.competitions_test[0]["name"]}
+                "club": self.clubs_test[3]["name"],
+                "competition": self.competitions_test[2]["name"]}
         )
         assert result.status_code in [200]
 
@@ -111,13 +111,13 @@ class TestPlacesNumber:
         """
         print('testing to book more than 12 places per competition')
         # reinitialisation of  the value
-        self.clubs_test[2]["points"] = server.clubs[2]["points"]
+        self.clubs_test[3]["points"] = server.clubs[3]["points"]
 
         result = self.client_test.post(
             "/purchasePlaces", data={
                 "places": 13,
-                "club": self.clubs_test[2]["name"],
-                "competition": self.competitions_test[0]["name"]}
+                "club": self.clubs_test[3]["name"],
+                "competition": self.competitions_test[2]["name"]}
         )
         assert result.status_code in [302]
 
