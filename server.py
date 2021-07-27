@@ -39,16 +39,16 @@ def showSummary():
 
 @app.route('/book/<competition>/<club>')
 def book(competition, club):
-    print(f'competitions {competitions}')
+    # print(f'competitions {competitions}')
     foundClub = [c for c in clubs if c['name'] == club][0]
     foundCompetition = [c for c in competitions if c['name'] == competition][0]
 
     for c in competitions:
         if c['name'] == competition:
             competitionData = c
-            print(f'c {c}')
+            # print(f'c {c}')
     foundCompetitionDate = competitionData['date']
-    print(f'foundCompetitionDate {foundCompetitionDate}')
+    # print(f'foundCompetitionDate {foundCompetitionDate}')
     if datetime.strptime(str(foundCompetitionDate), "%Y-%m-%d %H:%M:%S") <= datetime.now():
         flash("booking allowed only for future competition")
         return redirect(url_for('index'), 302)
