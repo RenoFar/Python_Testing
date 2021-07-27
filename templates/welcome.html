@@ -31,6 +31,12 @@
         {% endfor %}
     </ul>
     {%endwith%}
-
+    <h3>Points display board:</h3>
+    {% for club in clubs %}
+        <ul>
+            <li>Club: {{club['name']}}</li>
+            <li>Number of Points available: {{club['points']}}</li>
+        </ul>
+    {% endfor %}
 </body>
 </html>
