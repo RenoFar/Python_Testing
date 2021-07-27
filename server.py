@@ -31,7 +31,7 @@ def index():
 def showSummary():
     try:
         club = [club for club in clubs if club['email'] == request.form['email']][0]
-        return render_template('welcome.html', club=club, competitions=competitions)
+        return render_template('welcome.html', club=club, clubs=clubs, competitions=competitions)
     except IndexError:
         flash("Invalid email")
         return render_template("index.html", clubs=clubs), 403
